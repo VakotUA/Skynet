@@ -287,7 +287,6 @@ export const ActionEvents = {
     name: Events.MessageUpdate,
 
     async init(oldMessage: Message, newMessage: Message, client: SkynetClient, action: Action) {
-      if (oldMessage.content === newMessage.content) return
       if (!(await action.precondition(oldMessage, newMessage, client))) return
 
       // const oldInvalidations = Validator.action(action, oldMessage.author, oldMessage.guild)

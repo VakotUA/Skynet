@@ -5,8 +5,6 @@ import { SkynetClient } from '@modules/models/client'
 import logger from '@utils/helpers/logger'
 
 export async function loadEvents(client: SkynetClient): Promise<void> {
-  logger.debug('Events loading')
-
   client.clientActions.forEach((action) => {
     const { once, event } = action
 
@@ -14,7 +12,6 @@ export async function loadEvents(client: SkynetClient): Promise<void> {
       event.init(...args, client, action).catch(logger.error)
     )
   })
-  logger.log('Events <client> loaded')
 
   client.dataBaseActions.forEach((action) => {
     const { once, event } = action
@@ -23,5 +20,4 @@ export async function loadEvents(client: SkynetClient): Promise<void> {
       action.execute(...args, client).catch(logger.error)
     )
   })
-  logger.log('Events <data-base> loaded')
 }

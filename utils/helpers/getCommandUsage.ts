@@ -1,14 +1,16 @@
 import { SlashCommandBuilder, SlashCommandSubcommandBuilder } from 'discord.js'
 
 /**
- * function to easely create command using tutorial in following format
- * /command-name <required-option> (optional-option)
- * return as array to simplify discord text formatting, like below
- * ```/command-name <opt1> (op2)``` or `/command-name` `<opt1>` `(opt2)`
- * `\`\`\`${usage.join(' ')}\`\`\`` or usage.map(opt => `\`${opt}\``).join(' ')
+ * Creates command using tutorial in following format `/command-name <required-option> (optional-option)`
  *
- * @param {SlashCommandBuilder} command - instance of SlashCommandBuilder
- * @returns {string[]} - returns array [command name, ...options] in right format
+ * @param {SlashCommandBuilder} command instance of SlashCommandBuilder
+ * @returns {string[]} returns array `[command_name, ...options]` in right format
+ * @example
+ * // `/command-name` `<opt1>` `(opt2)`
+ * getCommandUsage(command).map(opt => `\`${opt}\``).join(' ')
+ * @example
+ * // ```/command-name <opt1> (op2)```
+ * '```' + getCommandUsage(command).join(' ') + '```'
  */
 export function getCommandUsage(command: SlashCommandBuilder): string[] {
   const { name, options } = command

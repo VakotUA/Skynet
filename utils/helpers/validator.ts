@@ -17,13 +17,12 @@ import { client } from '../..'
 import { devs, testServer } from '../../config.json'
 
 /**
- * function to automatically handle users cooldowns
- * each action have own cooldonws coolection, where
- * each user have a timestamp of cooldown
+ * Automatically handle users cooldowns.
+ * Each action have own cooldonws coolection, where each user have a timestamp of cooldown
  *
- * @param {Action} action - instance of Action class
- * @param {string} userId - userId provided by API
- * @returns {number | undefined} - timestamp where cooldown is over
+ * @param {Action} action instance of Action class
+ * @param {string} userId userId provided by API
+ * @returns {number | undefined} timestamp where cooldown is over in ms
  */
 export function handleCooldown(action: Action, userId: string): number | undefined {
   if (!action.cooldown) return
@@ -44,16 +43,31 @@ export function handleCooldown(action: Action, userId: string): number | undefin
   }
 }
 
+/**
+ * @param {User | APIUser} user instance of `User` or `APIUser`
+ * @returns {boolean} `true` | `false`
+ */
 export function isDeveloper(user: User | APIUser): boolean {
   if (!devs || !devs.length) return false
   return devs.includes(user.id)
 }
 
+/**
+ * @param {Guild} guild instance of `Guild`
+ * @returns {boolean} `true` | `false`
+ */
 export function isTest(guild: Guild): boolean {
   if (!testServer) return false
   return testServer === guild.id
 }
 
+/**
+ *
+ * @param {User} user instance of `User`
+ * @param {GuildChannel} channel instance of `GuildChannel`
+ * @param {PermissionResolvable[]} permissions array of `PermissionResolvable`
+ * @returns {boolean} `true` | `false`
+ */
 export function hasAllChannelPermissions(
   user: User,
   channel: GuildChannel,
@@ -64,6 +78,12 @@ export function hasAllChannelPermissions(
   return false
 }
 
+/**
+ * @param {User} user instance of `User`
+ * @param {GuildChannel} channel instance of `GuildChannel`
+ * @param {PermissionResolvable[]} permissions array of `PermissionResolvable`
+ * @returns {boolean} `true` | `false`
+ */
 export function hasAnyChannelPermissions(
   user: User,
   channel: GuildChannel,
@@ -74,15 +94,25 @@ export function hasAnyChannelPermissions(
   return false
 }
 
+/**
+ * @param {GuildMember} member instance of `GuildMember`
+ * @param {PermissionResolvable[]} permissions array of `PermissionResolvable`
+ * @returns {boolean} `true` | `false`
+ */
 export function hasAllGuildPermissions(
-  permissions: PermissionResolvable[],
-  member: GuildMember
+  member: GuildMember,
+  permissions: PermissionResolvable[]
 ): boolean {
   const userPermissions = member.permissions
   if (permissions.every((permission) => userPermissions.has(permission, true))) return true
   return false
 }
 
+/**
+ * @param {GuildMember} member instance of `GuildMember`
+ * @param {PermissionResolvable[]} permissions array of `PermissionResolvable`
+ * @returns {boolean} `true` | `false`
+ */
 export function hasAnyGuildPermissions(
   member: GuildMember,
   permissions: PermissionResolvable[]
@@ -92,18 +122,37 @@ export function hasAnyGuildPermissions(
   return false
 }
 
+/**
+ * @param {GuildMember} member instance of `GuildMember`
+ * @param {Snowflake[]} roles array of `Snowflake` (roles id's)
+ * @returns {boolean} `true` | `false`
+ */
 export function hasAllRoles(member: GuildMember, roles: Snowflake[]): boolean {
   const userRoles = member.roles.cache
   if (userRoles.hasAll(...roles)) return true
   return false
 }
 
+/**
+ * @param {GuildMember} member instance of `GuildMember`
+ * @param {Snowflake[]} roles array of `Snowflake` (roles id's)
+ * @returns {boolean} `true` | `false`
+ */
 export function hasAnyRoles(member: GuildMember, roles: Snowflake[]): boolean {
   const userRoles = member.roles.cache
   if (userRoles.hasAny(...roles)) return true
   return false
 }
 
+/**
+ * Complex `Action` validation
+ *
+ * @param {Action} action - instance of `Action`
+ * @param {User} user - instance of `User`
+ * @param {Guild | null} guild - instance of `Guild` or `null` (optional)
+ * @returns {string[]} array of `invalidation` messages
+ * by `cooldown`, `devsOnly`, `testOnly`, `deleteble` reasons
+ */
 export function action(action: Action, user: User, guild?: Guild | null): string[] {
   const invalidations: string[] = []
 
@@ -130,8 +179,8 @@ export function action(action: Action, user: User, guild?: Guild | null): string
     logger.warn(`${user.tag} called <test-server-only> action <${action.data.name}>`)
   }
 
-  // deleteble
-  if (action.deleteble) {
+  // deletable
+  if (action.deletable) {
     invalidations.push(`Actions is \`deleted\``)
     logger.warn(`${user.tag} called <deleted> action <${action.data.name}>`)
   }

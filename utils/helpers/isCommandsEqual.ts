@@ -1,5 +1,20 @@
 import { ApplicationCommand, SlashCommandBuilder } from 'discord.js'
 
+/**
+ * Compare local command with fetched command
+ *
+ * @param {SlashCommandBuilder} locCommand comamnd from locale
+ * @param {ApplicationCommand} apiCommand command from remote
+ * @returns {boolean} `true` if commands equals | `false` if commands **NOT** equals
+ * @example
+ * const locCommand = new SlashCommandBuilder() //...
+ *
+ * const appCommands = await client.commands.fetch()
+ * const apiCommand = appComamnds.find((cmd) => cmd.name === locCommand.name)
+ *
+ * if (!isCommandsEqual(locCommand, apiCommand)) // ...update command on remote
+ */
+
 export function isCommandsEqual(
   locCommand: SlashCommandBuilder,
   apiCommand: ApplicationCommand

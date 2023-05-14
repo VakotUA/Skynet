@@ -35,7 +35,7 @@ export class Action {
   // validateAction.ts will do that so you dont have to
   // P.S. (just not forget to call it)
   readonly cooldown?: number
-  readonly deleteble?: boolean
+  readonly deletable?: boolean
   readonly testOnly?: boolean
   readonly devsOnly?: boolean
 
@@ -70,7 +70,7 @@ export class Action {
     event: IEvent
     once?: boolean
     cooldown?: number
-    deleteble?: boolean
+    deletable?: boolean
     testOnly?: boolean
     devsOnly?: boolean
     forceUpdate?: boolean
@@ -85,7 +85,7 @@ export class Action {
       event,
       once = false,
       cooldown = 0,
-      deleteble = false,
+      deletable = false,
       testOnly = false,
       devsOnly = false,
       forceUpdate = false,
@@ -100,7 +100,7 @@ export class Action {
     this.event = event
     this.once = once
     this.cooldown = cooldown
-    this.deleteble = deleteble
+    this.deletable = deletable
     this.testOnly = testOnly
     this.devsOnly = devsOnly
     this.forceUpdate = forceUpdate
